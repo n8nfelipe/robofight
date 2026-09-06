@@ -94,6 +94,8 @@ const DEFAULT_BLUE = `const robot = {
   }
 };`;
 
+const { makeRobot, enemyInfo, projectileInfo, applyActions: applyCoreActions, advanceBullets } = BattleCore;
+
 const $ = (selector) => document.querySelector(selector);
 const canvas = $('#arena');
 const ctx = canvas.getContext('2d');
@@ -129,21 +131,6 @@ let particles = [];
 let flashes = [];
 let explosions = [];
 let robots = [];
-
-function makeRobot(team) {
-  const red = team === 'red';
-  return {
-    team,
-    x: red ? 135 : 625,
-    y: red ? 380 : 380,
-    angle: red ? 0 : 180,
-    hp: 100,
-    cooldown: 0,
-    flash: 0,
-    alive: true,
-    color: red ? '#ff3b30' : '#18a9ff'
-  };
-}
 
 function resetState() {
   battleId++;
@@ -236,49 +223,6 @@ function stopRunners() {
   runners = [];
 }
 
-function normalizeAngle(angle) {
-  let result = angle % 360;
-  if (result > 180) result -= 360;
-  if (result < -180) result += 360;
-  return result;
-}
-
-function enemyInfo(self, enemy) {
-  const dx = enemy.x - self.x;
-  const dy = enemy.y - self.y;
-  const bearing = Math.atan2(dy, dx) * 180 / Math.PI;
-  return {
-    distance: Math.hypot(dx, dy),
-    angle: normalizeAngle(bearing - self.angle),
-    energy: enemy.hp
-  };
-}
-
-function projectileInfo(self) {
-  return bullets
-    .filter(bullet => bullet.team !== self.team)
-    .map(bullet => {
-      const toRobotX = self.x - bullet.x;
-      const toRobotY = self.y - bullet.y;
-      const distance = Math.hypot(toRobotX, toRobotY);
-      const speedSquared = bullet.vx ** 2 + bullet.vy ** 2;
-      const approach = bullet.vx * toRobotX + bullet.vy * toRobotY;
-      const timeToImpact = approach / speedSquared;
-      const closestX = bullet.x + bullet.vx * Math.max(0, timeToImpact);
-      const closestY = bullet.y + bullet.vy * Math.max(0, timeToImpact);
-      const heading = Math.atan2(bullet.vy, bullet.vx) * 180 / Math.PI;
-      const side = ((bullet.x - self.x) * bullet.vy - (bullet.y - self.y) * bullet.vx) >= 0 ? 1 : -1;
-
-      return {
-        distance,
-        incoming: timeToImpact > 0,
-        missDistance: Math.hypot(closestX - self.x, closestY - self.y),
-        timeToImpact,
-        dodgeAngle: normalizeAngle(heading + side * 90 - self.angle)
-      };
-    });
-}
-
 async function battleTick() {
   if (!running || paused) return;
   turn++;
@@ -286,7 +230,7 @@ async function battleTick() {
     const enemy = robots[1 - index];
     return runners[index].run({
       enemy: enemyInfo(robot, enemy),
-      projectiles: projectileInfo(robot),
+      projectiles: projectileInfo(robot, bullets),
       self: { energy: robot.hp, cooldown: robot.cooldown, turn }
     });
   }));
@@ -315,34 +259,21 @@ async function battleTick() {
 }
 
 function applyActions(robot, actions) {
-  robot.angle = normalizeAngle(robot.angle + (actions.turn || 0));
-  const radians = robot.angle * Math.PI / 180;
-  const nextX = robot.x + Math.cos(radians) * (actions.move || 0) * 2.5;
-  const nextY = robot.y + Math.sin(radians) * (actions.move || 0) * 2.5;
-  robot.x = Math.max(35, Math.min(725, nextX));
-  robot.y = Math.max(35, Math.min(725, nextY));
   (actions.logs || []).forEach(message => log(robot.team, 'ROBÔ', message));
-  if (actions.fire && robot.cooldown === 0) {
-    bullets.push({ x: robot.x + Math.cos(radians) * 30, y: robot.y + Math.sin(radians) * 30, vx: Math.cos(radians) * 17, vy: Math.sin(radians) * 17, team: robot.team, color: robot.color, life: 55 });
-    robot.cooldown = 16;
-    flashes.push({ x: robot.x + Math.cos(radians) * 34, y: robot.y + Math.sin(radians) * 34, life: 5, color: robot.color });
-  }
+  const shot = applyCoreActions(robot, actions);
+  if (shot.bullet) bullets.push(shot.bullet);
+  if (shot.flash) flashes.push(shot.flash);
 }
 
 function moveBullets() {
-  bullets.forEach(b => {
-    b.x += b.vx; b.y += b.vy; b.life--;
-    const target = robots.find(r => r.team !== b.team);
-    if (target.alive && Math.hypot(b.x - target.x, b.y - target.y) < 29) {
-      target.hp = Math.max(0, target.hp - 5);
-      target.flash = 4;
-      b.life = 0;
-      for (let i = 0; i < 14; i++) particles.push({ x: b.x, y: b.y, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, life: 18 + Math.random() * 12, color: target.color });
-      log(target.team, 'DANO', `Impacto recebido. Integridade: ${target.hp}%`);
+  const result = advanceBullets(bullets, robots);
+  bullets = result.bullets;
+  result.hits.forEach(({ bullet, target }) => {
+    for (let i = 0; i < 14; i++) {
+      particles.push({ x: bullet.x, y: bullet.y, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, life: 18 + Math.random() * 12, color: target.color });
     }
-    if (b.x < 0 || b.x > 760 || b.y < 0 || b.y > 760) b.life = 0;
+    log(target.team, 'DANO', `Impacto recebido. Integridade: ${target.hp}%`);
   });
-  bullets = bullets.filter(b => b.life > 0);
 }
 
 function spawnExplosion(robot) {

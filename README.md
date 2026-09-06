@@ -4,6 +4,16 @@ robofight é uma arena de combate local para dois robôs programados em JavaScri
 
 O projeto roda diretamente no navegador e não exige instalação de dependências ou etapa de build.
 
+## Testes
+
+Os testes automatizados usam o executor nativo do Node.js, sem dependências adicionais. Com Node.js 18 ou mais recente, execute:
+
+```bash
+node --test
+```
+
+A suíte cobre o estado inicial dos robôs, normalização de ângulos, sensores, movimento, limites da arena, disparos, recarga, colisões e dano.
+
 ## Funcionalidades
 
 - Dois editores de estratégia JavaScript executados separadamente em Web Workers.
@@ -84,7 +94,9 @@ As chamadas de movimento, giro e disparo registram as ações daquele turno. Se 
 .
 ├── index.html   # Estrutura da interface
 ├── styles.css   # Layout, responsividade e identidade visual
-├── app.js       # Simulação, renderização e API dos robôs
+├── app.js       # Interface, execução dos robôs e renderização
+├── battle-core.js # Regras testáveis da simulação
+├── tests/       # Testes automatizados da arena
 └── README.md
 ```
 
