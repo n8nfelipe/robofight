@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Arena de robôs programáveis em JavaScript." />
+    <title>RoboRinha — Arena JavaScript</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="RoboRinha, início">
+        <span class="brand-mark">RR</span>
+        <span>ROBO<span>RINHA</span></span>
+      </a>
+      <div class="round-pill"><i></i><span id="roundLabel">PRONTO PARA LUTAR</span></div>
+      <button class="icon-button" id="helpButton" aria-label="Abrir manual">?</button>
+    </header>
+
+    <main class="app-shell">
+      <section class="coder-card red-card">
+        <div class="robot-heading">
+          <div>
+            <p class="eyebrow">DESAFIANTE 01</p>
+            <input id="redName" class="robot-name" value="RUBY RUSH" maxlength="18" aria-label="Nome do robô vermelho" />
+          </div>
+          <div class="mini-bot red-bot">01</div>
+        </div>
+        <div class="health-wrap">
+          <div class="health-meta"><span>INTEGRIDADE</span><strong id="redHpText">100%</strong></div>
+          <div class="health"><span id="redHpBar"></span></div>
+        </div>
+        <div class="editor-shell">
+          <div class="editor-bar"><span>robot-red.js</span><span class="status-dot">JAVASCRIPT</span></div>
+          <div class="editor-area">
+            <pre class="line-numbers" id="redLines" aria-hidden="true"></pre>
+            <textarea id="redCode" spellcheck="false" aria-label="Código do robô vermelho"></textarea>
+          </div>
+        </div>
+        <div class="console" id="redConsole"><span>SISTEMA</span> Código carregado. Aguardando combate.</div>
+      </section>
+
+      <section class="arena-column">
+        <div class="scoreboard">
+          <div><strong id="redScore">0</strong><span>VITÓRIAS</span></div>
+          <div class="versus">VS</div>
+          <div><strong id="blueScore">0</strong><span>VITÓRIAS</span></div>
+        </div>
+        <div class="arena-frame">
+          <canvas id="arena" width="760" height="760" aria-label="Arena da batalha"></canvas>
+          <div class="arena-corners"><i></i><i></i><i></i><i></i></div>
+          <div class="countdown hidden" id="countdown"></div>
+          <div class="result-card hidden" id="resultCard">
+            <span id="resultEyebrow">VITÓRIA</span>
+            <strong id="resultTitle">RUBY RUSH</strong>
+            <button id="rematchButton">REVANCHE</button>
+          </div>
+        </div>
+        <div class="battle-controls">
+          <button class="primary-button" id="battleButton"><span>▶</span> INICIAR BATALHA</button>
+          <button class="secondary-button" id="resetButton" aria-label="Reiniciar arena">↻</button>
+          <label class="speed-control">VELOCIDADE
+            <select id="speedSelect">
+              <option value="1">1×</option>
+              <option value="1.5">1.5×</option>
+              <option value="2">2×</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="coder-card blue-card">
+        <div class="robot-heading">
+          <div>
+            <p class="eyebrow">DESAFIANTE 02</p>
+            <input id="blueName" class="robot-name" value="COBALT-X" maxlength="18" aria-label="Nome do robô azul" />
+          </div>
+          <div class="mini-bot blue-bot">02</div>
+        </div>
+        <div class="health-wrap">
+          <div class="health-meta"><span>INTEGRIDADE</span><strong id="blueHpText">100%</strong></div>
+          <div class="health"><span id="blueHpBar"></span></div>
+        </div>
+        <div class="editor-shell">
+          <div class="editor-bar"><span>robot-blue.js</span><span class="status-dot">JAVASCRIPT</span></div>
+          <div class="editor-area">
+            <pre class="line-numbers" id="blueLines" aria-hidden="true"></pre>
+            <textarea id="blueCode" spellcheck="false" aria-label="Código do robô azul"></textarea>
+          </div>
+        </div>
+        <div class="console" id="blueConsole"><span>SISTEMA</span> Código carregado. Aguardando combate.</div>
+      </section>
+    </main>
+
+    <footer>
+      <span>JAVASCRIPT ROBOT COMBAT // BUILD 01</span>
+      <span>EDITE · EXECUTE · DESTRUA</span>
+    </footer>
+
+    <dialog id="manualDialog">
+      <button class="dialog-close" id="closeManual" aria-label="Fechar">×</button>
+      <p class="eyebrow">MANUAL DE CAMPO</p>
+      <h2>Programe seu robô</h2>
+      <p>Declare um objeto <code>robot</code> com o método <code>tick(api)</code>. Ele é chamado a cada turno.</p>
+      <div class="api-grid">
+        <code>api.scan()</code><span>Vê distância e ângulo do rival.</span>
+        <code>api.projectiles()</code><span>Lista tiros inimigos, risco de impacto e ângulo de esquiva.</span>
+        <code>api.move(n)</code><span>Avança ou recua até 5 unidades.</span>
+        <code>api.turn(graus)</code><span>Gira até 18° por turno.</span>
+        <code>api.fire()</code><span>Dispara na direção atual.</span>
+        <code>api.status()</code><span>Retorna sua energia e recarga.</span>
+        <code>api.log(msg)</code><span>Escreve no console do robô.</span>
+      </div>
+      <p class="manual-note">Cada turno aceita um movimento, um giro e um disparo. Robôs que excederem o tempo do turno serão desclassificados.</p>
+    </dialog>
+
+    <script src="app.js?v=5"></script>
+  </body>
+</html>

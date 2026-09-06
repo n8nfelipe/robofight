@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  --ink: #07090b;
+  --panel: #0e1114;
+  --line: #262b30;
+  --muted: #77818a;
+  --paper: #e7e8e3;
+  --red: #ff3b30;
+  --blue: #18a9ff;
+  --acid: #d7ff2f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--paper);
+  background: var(--ink);
+  font-family: "Chakra Petch", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle, black, transparent 85%);
+}
+
+.noise { position: fixed; inset: 0; opacity: .03; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+
+.topbar {
+  height: 72px;
+  padding: 0 clamp(18px, 3vw, 54px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: rgba(7,9,11,.92);
+  backdrop-filter: blur(16px);
+}
+
+.brand { color: white; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 19px; letter-spacing: .08em; }
+.brand > span:last-child span { color: var(--acid); }
+.brand-mark { width: 36px; height: 36px; display: grid; place-items: center; color: #080a08; background: var(--acid); clip-path: polygon(12% 0,100% 0,100% 72%,74% 100%,0 100%,0 12%); font-size: 13px; }
+.round-pill { border: 1px solid #30353a; border-radius: 99px; padding: 8px 14px; font: 600 10px "JetBrains Mono"; letter-spacing: .14em; color: #9da5aa; }
+.round-pill i { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 12px var(--acid); }
+.round-pill.live i { background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse .8s infinite alternate; }
+.icon-button { width: 36px; height: 36px; border: 1px solid #394047; color: #cbd0d3; background: transparent; border-radius: 50%; font-weight: 700; }
+
+.app-shell {
+  width: min(1680px, 100%);
+  min-height: calc(100vh - 114px);
+  margin: auto;
+  padding: 28px clamp(14px, 2.2vw, 38px);
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.35fr) minmax(280px, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.coder-card { min-width: 0; padding: 22px; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(21,24,27,.95), rgba(10,12,14,.97)); position: relative; }
+.coder-card::before { content: ""; position: absolute; inset: -1px auto auto -1px; width: 44px; height: 2px; background: var(--team); box-shadow: 0 0 16px var(--team); }
+.red-card { --team: var(--red); }
+.blue-card { --team: var(--blue); }
+.robot-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.eyebrow { margin: 0 0 5px; font: 600 10px "JetBrains Mono"; letter-spacing: .17em; color: var(--team, var(--acid)); }
+.robot-name { width: 210px; padding: 0; border: 0; outline: 0; color: white; background: transparent; font-size: clamp(21px, 2vw, 30px); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.mini-bot { width: 52px; height: 52px; display: grid; place-items: center; border: 1px solid currentColor; clip-path: polygon(15% 0,100% 0,100% 85%,85% 100%,0 100%,0 15%); font: 700 11px "JetBrains Mono"; }
+.red-bot { color: var(--red); background: #2e1110; }
+.blue-bot { color: var(--blue); background: #092337; }
+.health-wrap { margin-bottom: 18px; }
+.health-meta { display: flex; justify-content: space-between; margin-bottom: 7px; font: 600 9px "JetBrains Mono"; letter-spacing: .12em; color: #818a90; }
+.health-meta strong { color: var(--team); }
+.health { height: 5px; background: #282d31; overflow: hidden; }
+.health span { display: block; width: 100%; height: 100%; background: var(--team); box-shadow: 0 0 12px var(--team); transition: width .2s; }
+.editor-shell { border: 1px solid #282d31; background: #090b0d; }
+.editor-bar { height: 38px; padding: 0 12px; border-bottom: 1px solid #24282c; display: flex; align-items: center; justify-content: space-between; font: 600 9px "JetBrains Mono"; color: #8e979d; }
+.status-dot { color: var(--team); }
+.status-dot::before { content: "●"; margin-right: 6px; }
+.editor-area { display: grid; grid-template-columns: 38px 1fr; height: min(46vh, 435px); min-height: 300px; }
+.line-numbers { margin: 0; padding: 14px 8px; overflow: hidden; border-right: 1px solid #1e2225; color: #3f474d; text-align: right; font: 11px/1.65 "JetBrains Mono"; user-select: none; }
+textarea { width: 100%; height: 100%; resize: none; border: 0; outline: 0; padding: 14px; color: #cbd1d5; background: transparent; caret-color: var(--team); font: 11px/1.65 "JetBrains Mono"; tab-size: 2; white-space: pre; overflow: auto; }
+.console { min-height: 42px; max-height: 74px; overflow: auto; margin-top: 12px; padding: 10px 12px; border-left: 2px solid var(--team); color: #778188; background: #090b0d; font: 9px/1.45 "JetBrains Mono"; }
+.console span { color: var(--team); margin-right: 7px; }
+
+.arena-column { min-width: 0; }
+.scoreboard { display: flex; justify-content: center; align-items: end; gap: 34px; margin-bottom: 14px; text-align: center; }
+.scoreboard div:not(.versus) { display: flex; flex-direction: column; }
+.scoreboard strong { font-size: 27px; line-height: .9; }
+.scoreboard div:first-child strong { color: var(--red); }
+.scoreboard div:last-child strong { color: var(--blue); }
+.scoreboard span { margin-top: 4px; color: #657078; font: 8px "JetBrains Mono"; letter-spacing: .13em; }
+.versus { color: #4c545a; font-weight: 700; font-size: 13px; }
+.arena-frame { position: relative; aspect-ratio: 1; max-height: 69vh; margin: auto; border: 1px solid #343a40; background: #0b0e10; box-shadow: 0 24px 80px #000; }
+#arena { display: block; width: 100%; height: 100%; }
+.arena-corners i { position: absolute; width: 20px; height: 20px; border-color: var(--acid); border-style: solid; pointer-events: none; }
+.arena-corners i:nth-child(1) { top: -3px; left: -3px; border-width: 2px 0 0 2px; }
+.arena-corners i:nth-child(2) { top: -3px; right: -3px; border-width: 2px 2px 0 0; }
+.arena-corners i:nth-child(3) { bottom: -3px; left: -3px; border-width: 0 0 2px 2px; }
+.arena-corners i:nth-child(4) { bottom: -3px; right: -3px; border-width: 0 2px 2px 0; }
+.countdown { position: absolute; inset: 0; display: grid; place-items: center; z-index: 3; color: white; background: rgba(7,9,11,.42); backdrop-filter: blur(3px); font: 700 clamp(70px, 10vw, 140px) "Chakra Petch"; text-shadow: 0 0 50px var(--acid); }
+.result-card { position: absolute; inset: 25% 11%; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(7,9,11,.92); border: 1px solid #485057; backdrop-filter: blur(12px); text-align: center; }
+.result-card span { color: var(--acid); font: 700 10px "JetBrains Mono"; letter-spacing: .24em; }
+.result-card strong { margin: 10px 0 20px; font-size: clamp(28px, 4vw, 52px); }
+.result-card button { border: 0; padding: 11px 22px; background: var(--acid); color: #0a0d08; font-weight: 700; }
+.hidden { display: none !important; }
+.battle-controls { margin-top: 16px; display: flex; justify-content: center; gap: 8px; }
+.primary-button, .secondary-button, select { height: 46px; border: 1px solid #3b4248; color: white; background: #171b1e; }
+.primary-button { min-width: 205px; border-color: var(--acid); background: var(--acid); color: #090b08; font-weight: 700; letter-spacing: .06em; clip-path: polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px); }
+.primary-button:hover { filter: brightness(1.12); }
+.primary-button.running { border-color: var(--red); background: var(--red); color: white; }
+.secondary-button { width: 46px; font-size: 20px; }
+.speed-control { margin-left: 6px; color: #69737a; font: 8px "JetBrains Mono"; letter-spacing: .1em; display: flex; flex-direction: column; justify-content: center; }
+select { height: 25px; margin-top: 2px; padding: 0 18px 0 5px; font: 10px "JetBrains Mono"; }
+
+footer { min-height: 42px; padding: 0 clamp(18px, 3vw, 54px); border-top: 1px solid var(--line); color: #4f585e; display: flex; align-items: center; justify-content: space-between; font: 8px "JetBrains Mono"; letter-spacing: .12em; }
+
+dialog { max-width: 580px; color: #dfe3e5; border: 1px solid #3a4248; padding: 30px; background: #101417; box-shadow: 0 30px 100px #000; }
+dialog::backdrop { background: rgba(0,0,0,.78); backdrop-filter: blur(4px); }
+dialog h2 { margin: 5px 0 12px; font-size: 30px; }
+dialog p { color: #929ca3; }
+.dialog-close { position: absolute; right: 12px; top: 10px; color: #899299; border: 0; background: transparent; font-size: 24px; }
+.api-grid { display: grid; grid-template-columns: 145px 1fr; border-top: 1px solid #283037; }
+.api-grid > * { padding: 10px; border-bottom: 1px solid #283037; }
+.api-grid code { color: var(--acid); background: #0a0d0f; }
+.api-grid span { color: #adb5ba; font-size: 13px; }
+.manual-note { font-size: 12px; }
+
+@keyframes pulse { to { opacity: .35; } }
+
+@media (max-width: 1120px) {
+  .app-shell { grid-template-columns: 1fr 1fr; align-items: start; }
+  .arena-column { grid-column: 1 / -1; grid-row: 1; width: min(650px, 100%); margin: auto; }
+  .arena-frame { max-height: none; }
+}
+
+@media (max-width: 680px) {
+  .topbar { height: 60px; }
+  .round-pill { display: none; }
+  .app-shell { display: flex; flex-direction: column; padding: 14px; }
+  .arena-column, .coder-card { width: 100%; }
+  .editor-area { height: 330px; min-height: 0; }
+  .battle-controls { flex-wrap: wrap; }
+  footer span:last-child { display: none; }
+}
