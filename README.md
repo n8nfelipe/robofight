@@ -1,6 +1,6 @@
-# RoboRinha
+# robofight
 
-RoboRinha é uma arena de combate local para dois robôs programados em JavaScript. Cada competidor possui seu próprio editor, console, barra de integridade e placar; durante a batalha, os robôs analisam o adversário, movimentam-se, desviam de projéteis e disparam de forma autônoma.
+robofight é uma arena de combate local para dois robôs programados em JavaScript. Cada competidor possui seu próprio editor, console, barra de integridade e placar; durante a batalha, os robôs analisam o adversário, movimentam-se, desviam de projéteis e disparam de forma autônoma.
 
 O projeto roda diretamente no navegador e não exige instalação de dependências ou etapa de build.
 

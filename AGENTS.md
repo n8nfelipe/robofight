@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-RoboRinha is a dependency-free browser application with a flat structure:
+robofight is a dependency-free browser application with a flat structure:
 
 - `index.html`: page structure, controls, editors, dialog, and canvas.
 - `styles.css`: visual tokens, responsive layout, and animations.

@@ -459,26 +459,26 @@ function updateLines(team) {
 }
 
 function saveEditors() {
-  localStorage.setItem('roborinha-red', ui.red.code.value);
-  localStorage.setItem('roborinha-blue', ui.blue.code.value);
-  localStorage.setItem('roborinha-red-name', ui.red.name.value);
-  localStorage.setItem('roborinha-blue-name', ui.blue.name.value);
+  localStorage.setItem('robofight-red', ui.red.code.value);
+  localStorage.setItem('robofight-blue', ui.blue.code.value);
+  localStorage.setItem('robofight-red-name', ui.red.name.value);
+  localStorage.setItem('robofight-blue-name', ui.blue.name.value);
 }
 
 function setupEditor(team, fallback) {
   const editor = ui[team].code;
-  const rubyUpgrade = team === 'red' && localStorage.getItem('roborinha-red-strategy-version') !== '4';
-  const cobaltUpgrade = team === 'blue' && localStorage.getItem('roborinha-blue-strategy-version') !== '4';
-  editor.value = (rubyUpgrade || cobaltUpgrade) ? fallback : (localStorage.getItem(`roborinha-${team}`) || fallback);
+  const rubyUpgrade = team === 'red' && localStorage.getItem('robofight-red-strategy-version') !== '4';
+  const cobaltUpgrade = team === 'blue' && localStorage.getItem('robofight-blue-strategy-version') !== '4';
+  editor.value = (rubyUpgrade || cobaltUpgrade) ? fallback : (localStorage.getItem(`robofight-${team}`) || fallback);
   if (rubyUpgrade) {
-    localStorage.setItem('roborinha-red', fallback);
-    localStorage.setItem('roborinha-red-strategy-version', '4');
+    localStorage.setItem('robofight-red', fallback);
+    localStorage.setItem('robofight-red-strategy-version', '4');
   }
   if (cobaltUpgrade) {
-    localStorage.setItem('roborinha-blue', fallback);
-    localStorage.setItem('roborinha-blue-strategy-version', '4');
+    localStorage.setItem('robofight-blue', fallback);
+    localStorage.setItem('robofight-blue-strategy-version', '4');
   }
-  ui[team].name.value = localStorage.getItem(`roborinha-${team}-name`) || ui[team].name.value;
+  ui[team].name.value = localStorage.getItem(`robofight-${team}-name`) || ui[team].name.value;
   updateLines(team);
   editor.addEventListener('input', () => { updateLines(team); saveEditors(); });
   editor.addEventListener('scroll', () => { ui[team].lines.scrollTop = editor.scrollTop; });
